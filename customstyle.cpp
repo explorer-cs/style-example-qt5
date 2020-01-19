@@ -1,8 +1,16 @@
 #include "customstyle.h"
 
+#include "animationmanager.h"
+#include <QWidget>
+
+#include <QStyleOption>
+#include <QPainter>
+
+#include <QDebug>
+
 CustomStyle::CustomStyle(const QString &proxyStyleName, QObject *parent) : QProxyStyle (proxyStyleName)
 {
-
+    m_manager = new AnimationManager(this);
 }
 
 void CustomStyle::drawComplexControl(QStyle::ComplexControl control, const QStyleOptionComplex *option, QPainter *painter, const QWidget *widget) const
@@ -25,8 +33,47 @@ void CustomStyle::drawItemText(QPainter *painter, const QRect &rectangle, int al
     return QProxyStyle::drawItemText(painter, rectangle, alignment, palette, enabled, text, textRole);
 }
 
+/// 我们重写button的绘制方法，通过state和当前动画的状态以及value值改变相关的绘制条件
+/// 这里通过判断hover与否，动态的调整painter的透明度然后绘制背景
+/// 需要注意的是，默认控件的绘制流程只会触发一次，而动画需要我们在一段时间内不停绘制才行，
+/// 要使得动画能够持续，我们需要使用QWidget::update()在动画未完成时，
+/// 手动更新一次，这样button将在一段时间后再次调用draw方法，从而达到更新动画的效果
+///
+/// 需要注意绘制背景的流程会因主题不同而产生差异，所以这一部分代码在一些主题中未必正常，
+/// 如果你需要自己实现一个主题，这同样是你需要注意和考虑的点
 void CustomStyle::drawPrimitive(QStyle::PrimitiveElement element, const QStyleOption *option, QPainter *painter, const QWidget *widget) const
 {
+    if (element == PE_PanelButtonCommand) {
+        qDebug()<<"draw pe button";
+        if (widget) {
+            if (!option->state.testFlag(State_Sunken)) {
+                double opacity = m_manager->value(widget).toDouble();
+                if (option->state.testFlag(State_MouseOver)) {
+                    m_manager->setAnimationDirection(widget, QAbstractAnimation::Forward);
+                    if (opacity == 0.0) {
+                        m_manager->startAnimation(widget);
+                    }
+                } else {
+                    m_manager->setAnimationDirection(widget, QAbstractAnimation::Backward);
+                    if (opacity == 1.0) {
+                        m_manager->startAnimation(widget);
+                    }
+                }
+
+                if (m_manager->isAnimationRunning(widget)) {
+                    const_cast<QWidget *>(widget)->update();
+                }
+
+                painter->save();
+                painter->setPen(Qt::transparent);
+                painter->setBrush(Qt::red);
+                painter->setOpacity(opacity);
+                painter->drawRect(option->rect);
+                painter->restore();
+                return;
+            }
+        }
+    }
     return QProxyStyle::drawPrimitive(element, option, painter, widget);
 }
 
@@ -55,8 +102,15 @@ int CustomStyle::pixelMetric(QStyle::PixelMetric metric, const QStyleOption *opt
     return QProxyStyle::pixelMetric(metric, option, widget);
 }
 
+/// 我们需要将动画与widget一一对应起来，
+/// 在一个style的生命周期里，widget只会进行polish和unpolish各一次，
+/// 所以我们可以在polish时将widget与一个新的动画绑定，并且对应的在unpolish中解绑定
 void CustomStyle::polish(QWidget *widget)
 {
+    if (widget->inherits("QPushButton")) {
+        widget->setAttribute(Qt::WA_Hover);
+        m_manager->registerWidget(widget);
+    }
     return QProxyStyle::polish(widget);
 }
 
@@ -72,6 +126,9 @@ void CustomStyle::polish(QPalette &palette)
 
 void CustomStyle::unpolish(QWidget *widget)
 {
+    if (widget->inherits("QPushButton")) {
+        m_manager->unregisterWidget(widget);
+    }
     return QProxyStyle::unpolish(widget);
 }
 

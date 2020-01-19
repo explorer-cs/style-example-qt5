@@ -17,7 +17,7 @@
  * \param argv
  * \return
  * \see
- * CustomStyle, MainWindow
+ * CustomStyle, Animation, AnimationHelper
  */
 int main(int argc, char *argv[])
 {

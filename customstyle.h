@@ -3,6 +3,8 @@
 
 #include <QProxyStyle>
 
+class AnimationManager;
+
 /*!
  * \brief The CustomStyle class
  * \details
@@ -133,6 +135,9 @@ public:
 signals:
 
 public slots:
+
+private:
+    AnimationManager *m_manager;
 };
 
 #endif // CUSTOMSTYLE_H

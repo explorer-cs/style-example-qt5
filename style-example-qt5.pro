@@ -27,11 +27,15 @@ CONFIG += c++11
 SOURCES += \
         main.cpp \
         mainwindow.cpp \
-    customstyle.cpp
+    customstyle.cpp \
+    animationmanager.cpp \
+    animation.cpp
 
 HEADERS += \
         mainwindow.h \
-    customstyle.h
+    customstyle.h \
+    animationmanager.h \
+    animation.h
 
 FORMS += \
         mainwindow.ui
