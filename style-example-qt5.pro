@@ -27,11 +27,15 @@ CONFIG += c++11
 SOURCES += \
         main.cpp \
         mainwindow.cpp \
-    customstyle.cpp
+    customstyle.cpp \
+    colorscheme.cpp \
+    palettedialog.cpp
 
 HEADERS += \
         mainwindow.h \
-    customstyle.h
+    customstyle.h \
+    colorscheme.h \
+    palettedialog.h
 
 FORMS += \
         mainwindow.ui
