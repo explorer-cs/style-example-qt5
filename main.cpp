@@ -25,8 +25,10 @@ int main(int argc, char *argv[])
 
     QApplication::setStyle(new CustomStyle());
     MainWindow w;
+    w.setAttribute(Qt::WA_TranslucentBackground);
 
     QMainWindow settingsWindow;
+    settingsWindow.setAttribute(Qt::WA_TranslucentBackground);
 
     /*!
      * \brief c 用于切换主题
