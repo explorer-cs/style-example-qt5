@@ -1,5 +1,10 @@
 #include "customstyle.h"
 
+#include <QWidget>
+#include <QRegion>
+#include <QVariant>
+#include <QDebug>
+
 CustomStyle::CustomStyle(const QString &proxyStyleName, QObject *parent) : QProxyStyle (proxyStyleName)
 {
 
@@ -57,6 +62,14 @@ int CustomStyle::pixelMetric(QStyle::PixelMetric metric, const QStyleOption *opt
 
 void CustomStyle::polish(QWidget *widget)
 {
+    if (widget) {
+        if (widget->inherits("QTipLabel")) {
+            widget->setAttribute(Qt::WA_TranslucentBackground);
+            QRegion region;
+            qDebug()<<region;
+            widget->setProperty("blurRegion", region);
+        }
+    }
     return QProxyStyle::polish(widget);
 }
 
