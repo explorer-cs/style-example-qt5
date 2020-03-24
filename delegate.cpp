@@ -68,6 +68,18 @@ QSize Delegate::sizeHint(const QStyleOptionViewItem &option0, const QModelIndex 
     return QStyledItemDelegate::sizeHint(option, index);
 }
 
+/*!
+ * \brief Delegate::paint
+ * \param painter
+ * \param option0
+ * \param index
+ *
+ * \bug
+ * 如果你的文本内容包含回车，那么绘制的文本可能会越界，
+ * 我认为这是一个bug，不过这里我没有解决这个问题，
+ * 因为文件管理器的文件名一般不会有换行符的存在，
+ * 所以无伤大雅
+ */
 void Delegate::paint(QPainter *painter, const QStyleOptionViewItem &option0, const QModelIndex &index) const
 {
     QStyleOptionViewItem option = option0;
