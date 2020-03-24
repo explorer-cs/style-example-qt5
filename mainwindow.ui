@@ -15,75 +15,96 @@
   </property>
   <widget class="QWidget" name="centralWidget">
    <layout class="QGridLayout" name="gridLayout">
-    <item row="6" column="1">
-     <widget class="QSlider" name="verticalSlider">
-      <property name="orientation">
-       <enum>Qt::Vertical</enum>
-      </property>
-     </widget>
-    </item>
-    <item row="2" column="2">
-     <widget class="QLabel" name="label_2">
+    <item row="1" column="3" colspan="2">
+     <widget class="QCheckBox" name="autoAdjustCheckBox">
       <property name="text">
-       <string>工具栏按钮</string>
+       <string>自适应宽度</string>
       </property>
      </widget>
     </item>
-    <item row="6" column="0">
-     <widget class="QLabel" name="label_3">
+    <item row="1" column="0">
+     <widget class="QLabel" name="label">
       <property name="text">
-       <string>滑块</string>
-      </property>
-     </widget>
-    </item>
-    <item row="6" column="3">
-     <widget class="QScrollBar" name="verticalScrollBar">
-      <property name="orientation">
-       <enum>Qt::Vertical</enum>
+       <string>宽</string>
       </property>
      </widget>
     </item>
     <item row="2" column="0">
-     <widget class="QLabel" name="label">
+     <widget class="QSpinBox" name="widthSpinBox">
+      <property name="minimum">
+       <number>1</number>
+      </property>
+      <property name="maximum">
+       <number>9999</number>
+      </property>
+      <property name="value">
+       <number>100</number>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="0" colspan="2">
+     <widget class="QPlainTextEdit" name="plainTextEdit">
+      <property name="plainText">
+       <string>这是一个关于文本计算和绘制的例子，它展示如何计算文本的布局，并且在一个区域进行绘制。                   你可以调整宽和高改变右侧视图元素的显示区域，也可以选择自自适应的方式展现整个文本。                            另外，你也可以指定绘制的行数，需要注意的是它可能收到视图区域的限制。</string>
+      </property>
+     </widget>
+    </item>
+    <item row="2" column="3">
+     <widget class="QCheckBox" name="enableCustomMaxLineCheckBox">
       <property name="text">
-       <string>按钮</string>
+       <string>自定义最多显示行数</string>
       </property>
      </widget>
     </item>
-    <item row="6" column="2">
-     <widget class="QLabel" name="label_4">
+    <item row="1" column="1">
+     <widget class="QLabel" name="label_2">
       <property name="text">
-       <string>滚动条</string>
+       <string>高</string>
       </property>
      </widget>
     </item>
-    <item row="7" column="2">
-     <widget class="QScrollBar" name="horizontalScrollBar">
-      <property name="orientation">
-       <enum>Qt::Horizontal</enum>
+    <item row="2" column="4">
+     <widget class="QSpinBox" name="maxLineSpinBox">
+      <property name="enabled">
+       <bool>false</bool>
+      </property>
+      <property name="minimum">
+       <number>1</number>
       </property>
      </widget>
     </item>
-    <item row="7" column="0">
-     <widget class="QSlider" name="horizontalSlider">
-      <property name="orientation">
-       <enum>Qt::Horizontal</enum>
+    <item row="2" column="1">
+     <widget class="QSpinBox" name="heightSpinBox">
+      <property name="minimum">
+       <number>1</number>
+      </property>
+      <property name="maximum">
+       <number>9999</number>
+      </property>
+      <property name="value">
+       <number>200</number>
       </property>
      </widget>
     </item>
-    <item row="3" column="0">
-     <widget class="QPushButton" name="pushButton">
+    <item row="1" column="2">
+     <widget class="QLabel" name="label_3">
       <property name="text">
-       <string>PushButton</string>
+       <string>字体大小</string>
       </property>
      </widget>
     </item>
-    <item row="3" column="2">
-     <widget class="QToolButton" name="toolButton">
-      <property name="text">
-       <string>...</string>
+    <item row="2" column="2">
+     <widget class="QSpinBox" name="fontSizeSpinBox">
+      <property name="minimum">
+       <number>12</number>
+      </property>
+      <property name="value">
+       <number>14</number>
       </property>
      </widget>
+    </item>
+    <item row="0" column="2" colspan="3">
+     <widget class="QListWidget" name="listWidget"/>
     </item>
    </layout>
   </widget>

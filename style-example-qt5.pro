@@ -25,11 +25,13 @@ DEFINES += QT_DEPRECATED_WARNINGS
 CONFIG += c++11
 
 SOURCES += \
+    delegate.cpp \
         main.cpp \
         mainwindow.cpp \
     customstyle.cpp
 
 HEADERS += \
+    delegate.h \
         mainwindow.h \
     customstyle.h
 
