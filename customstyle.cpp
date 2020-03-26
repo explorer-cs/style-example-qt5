@@ -1,8 +1,30 @@
 #include "customstyle.h"
 
+#include <QAbstractItemView>
+#include <QEvent>
+
 CustomStyle::CustomStyle(const QString &proxyStyleName, QObject *parent) : QProxyStyle (proxyStyleName)
 {
 
+}
+
+bool CustomStyle::eventFilter(QObject *obj, QEvent *e)
+{
+    auto view = qobject_cast<QAbstractItemView *>(obj);
+    if (!view)
+        return false;
+    if (e->type() == QEvent::Resize) {
+        bool ret = QProxyStyle::eventFilter(obj, e);
+
+        QRegion region;
+        QPainterPath path;
+        int pm_frameWidth = pixelMetric(PM_DefaultFrameWidth);
+        path.addRoundedRect(view->rect().adjusted(pm_frameWidth, pm_frameWidth, -pm_frameWidth, -pm_frameWidth), 6, 6);
+        region = path.toFillPolygon().toPolygon();
+        view->setMask(region);
+
+        return ret;
+    }
 }
 
 void CustomStyle::drawComplexControl(QStyle::ComplexControl control, const QStyleOptionComplex *option, QPainter *painter, const QWidget *widget) const
@@ -57,6 +79,17 @@ int CustomStyle::pixelMetric(QStyle::PixelMetric metric, const QStyleOption *opt
 
 void CustomStyle::polish(QWidget *widget)
 {
+    if (auto view = qobject_cast<const QAbstractItemView *>(widget)) {
+        QRegion region;
+        QPainterPath path;
+        int pm_frameWidth = pixelMetric(PM_DefaultFrameWidth);
+        path.addRoundedRect(view->rect().adjusted(pm_frameWidth, pm_frameWidth, -pm_frameWidth, -pm_frameWidth), 6, 6);
+        region = path.toFillPolygon().toPolygon();
+        const_cast<QWidget *>(widget)->setMask(region);
+
+        widget->installEventFilter(this);
+        return;
+    }
     return QProxyStyle::polish(widget);
 }
 
@@ -72,6 +105,12 @@ void CustomStyle::polish(QPalette &palette)
 
 void CustomStyle::unpolish(QWidget *widget)
 {
+    if (auto view = qobject_cast<const QAbstractItemView *>(widget)) {
+        /// 当主题切换时，需要还原mask，并且移除事件钩子
+        widget->setMask(QRegion());
+        widget->removeEventFilter(this);
+        return;
+    }
     return QProxyStyle::unpolish(widget);
 }
 
