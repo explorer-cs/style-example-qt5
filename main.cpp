@@ -24,9 +24,14 @@ int main(int argc, char *argv[])
     QApplication a(argc, argv);
 
     QApplication::setStyle(new CustomStyle());
+
+    /// 在MainWindow中绘制一个带阴影的圆角方框
     MainWindow w;
+    w.setAttribute(Qt::WA_TranslucentBackground);
 
     QMainWindow settingsWindow;
+    settingsWindow.setAttribute(Qt::WA_TranslucentBackground);
+    settingsWindow.resize(800, 600);
 
     /*!
      * \brief c 用于切换主题
