@@ -20,6 +20,10 @@ public:
     explicit MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
+protected:
+    //我们需要在resizeEvent中动态的设置想要模糊的区域
+    void resizeEvent(QResizeEvent *e);
+
 private:
     Ui::MainWindow *ui;
 };
