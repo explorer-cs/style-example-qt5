@@ -5,6 +5,7 @@
 #-------------------------------------------------
 
 QT       += core gui
+QT += datavisualization
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -22,14 +23,19 @@ DEFINES += QT_DEPRECATED_WARNINGS
 # You can also select to disable deprecated APIs only up to a certain version of Qt.
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
-CONFIG += c++11
+CONFIG += c++11 link_pkgconfig
+PKGCONFIG += eigen3
 
 SOURCES += \
+    axesinputhandler.cpp \
+    data.cpp \
         main.cpp \
         mainwindow.cpp \
     customstyle.cpp
 
 HEADERS += \
+    axesinputhandler.h \
+    data.h \
         mainwindow.h \
     customstyle.h
 
