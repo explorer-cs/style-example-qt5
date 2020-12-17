@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       += core gui
+QT       += core gui x11extras
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -24,14 +24,18 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 CONFIG += c++11
 
+LIBS += -lX11
+
 SOURCES += \
         main.cpp \
         mainwindow.cpp \
-    customstyle.cpp
+    customstyle.cpp \
+    xatom-helper.cpp
 
 HEADERS += \
         mainwindow.h \
-    customstyle.h
+    customstyle.h \
+    xatom-helper.h
 
 FORMS += \
         mainwindow.ui
